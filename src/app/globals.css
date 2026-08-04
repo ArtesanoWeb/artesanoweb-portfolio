@@ -3,11 +3,21 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --muted: #62676a;
+  --border: #e3e5e6;
+  --card: #f7f8f7;
+  --accent: #1f3b33;
+  --accent-foreground: #ffffff;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-card: var(--card);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -16,6 +26,11 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --muted: #9aa0a3;
+    --border: #262a28;
+    --card: #121413;
+    --accent: #6fcf9e;
+    --accent-foreground: #0a0a0a;
   }
 }
 
