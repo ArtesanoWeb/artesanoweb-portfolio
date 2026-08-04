@@ -27,16 +27,7 @@ export function Hero() {
           className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-medium transition-colors hover:bg-card"
         >
           <DownloadIcon className="size-4" />
-          Download CV (EN)
-        </a>
-        <a
-          href="/cv/Henrique_Alvarez_CV_ES.pdf"
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-medium text-muted transition-colors hover:bg-card"
-        >
-          <DownloadIcon className="size-4" />
-          CV (ES)
+          Download CV
         </a>
       </div>
     </section>

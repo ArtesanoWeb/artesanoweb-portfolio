@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Henrique Alvarez — Portfolio
 
-## Getting Started
+![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38bdf8?logo=tailwindcss)
 
-First, run the development server:
+Personal portfolio and blog, built to demonstrate the stack listed on my
+resume rather than just describe it.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Features
+
+- **Live projects feed** — the Projects section fetches directly from the
+  [GitHub API](https://docs.github.com/en/rest) at request time, so it stays
+  current as new repos are pushed, with no manual updates or hardcoded data.
+- **One-click CV download** — links straight to the current PDF resume.
+- **Blog** — short write-ups on what I'm building and learning.
+- **Light/dark mode** — follows the visitor's system preference.
+- Fully responsive, no client-side JavaScript beyond what Next.js ships by
+  default — every section is a server component.
+
+## Tech stack
+
+- [Next.js 16](https://nextjs.org) (App Router)
+- [TypeScript](https://www.typescriptlang.org)
+- [Tailwind CSS 4](https://tailwindcss.com)
+- No UI or icon libraries — icons are hand-written inline SVG
+  (`src/components/Icons.tsx`)
+
+## Project structure
+
+```
+src/
+  app/
+    page.tsx            # Home: hero + about + experience + projects + skills + contact
+    blog/page.tsx        # Blog index
+    blog/[slug]/page.tsx # Blog post
+  components/            # Section and UI components
+  lib/
+    cv-data.ts            # Profile, experience, education, skills (source of truth for the CV content)
+    github.ts              # Live GitHub repos fetcher for the Projects section
+    blog-posts.ts          # Blog post content
+public/
+  cv/                     # Downloadable CV PDF
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Getting started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open [http://localhost:3000](http://localhost:3000).
 
-## Learn More
+```bash
+npm run build   # production build
+npm run lint    # eslint
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Content
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Profile, experience, education, and skills live in `src/lib/cv-data.ts` and
+mirror my English CV — updating one doesn't automatically update the other,
+so both are kept in sync by hand. Projects are not hardcoded: the section
+fetches live from `github.com/ArtesanoWeb` via the public GitHub API.
