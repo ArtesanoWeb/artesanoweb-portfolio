@@ -10,7 +10,7 @@ export type Repo = {
 };
 
 // Repos that exist on the account but aren't meant to be shown as portfolio pieces.
-const EXCLUDED_REPOS = new Set(["prueba-hosting"]);
+const EXCLUDED_REPOS = new Set(["prueba-hosting", "Practica-1---Web-development"]);
 
 export async function getPinnedRepos(): Promise<Repo[]> {
   try {
