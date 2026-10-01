@@ -75,13 +75,16 @@ function ArtesanStepRow({
         <div className="w-full overflow-hidden rounded border border-[#e3e3e3] bg-[#f3f3f3] group-hover:border-[#c9c9c9]">
           <div className="border-b border-[#e3e3e3] px-2.5 py-1.5">
             <div className="pb-1 text-[10px] font-semibold tracking-wide text-[#8a8a8a]">IN</div>
-            <div className="flex flex-col gap-0.5">
+            <div className="flex flex-col gap-1">
               {step.inRows.map((row) => (
-                <div key={row.map(([key]) => key).join("+")} className="flex min-w-0 gap-4 text-[12px]">
+                <div
+                  key={row.map(([key]) => key).join("+")}
+                  className="flex flex-col gap-0.5 text-[12px] sm:flex-row sm:min-w-0 sm:gap-4"
+                >
                   {row.map(([key, value]) => (
                     <span key={key} className="flex min-w-0 gap-2">
                       <span className="shrink-0 text-[#8957e5]">{key}:</span>
-                      <span className="truncate text-[#3b3b3b]">{value}</span>
+                      <span className="min-w-0 wrap-break-word text-[#3b3b3b] sm:truncate">{value}</span>
                     </span>
                   ))}
                 </div>

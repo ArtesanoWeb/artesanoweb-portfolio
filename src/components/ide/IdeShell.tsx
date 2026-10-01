@@ -71,7 +71,7 @@ export function IdeShell({
             <ArtesanPanel steps={steps} onOpenDetail={openFile} />
           ) : activeFile ? (
             <div
-              className="ide-code-pane [&_pre]:m-0! [&_pre]:min-h-full [&_pre]:bg-white! [&_pre]:px-4 [&_pre]:py-3 [&_pre]:text-[13px] [&_pre]:leading-[1.6]"
+              className="ide-code-pane [&_pre]:m-0! [&_pre]:min-h-full [&_pre]:bg-white! [&_pre]:px-4 [&_pre]:py-3 [&_pre]:text-[13px] [&_pre]:leading-[1.6] [&_pre]:whitespace-pre-wrap [&_pre]:wrap-break-word sm:[&_pre]:whitespace-pre sm:[&_pre]:break-normal"
               dangerouslySetInnerHTML={{ __html: activeFile.html }}
             />
           ) : (
