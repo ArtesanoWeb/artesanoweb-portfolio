@@ -29,12 +29,12 @@ export default async function Home() {
     }))
   );
 
-  const stepMeta = steps.map(({ id, kind, tabName, lineCount, inFields, outLines }) => ({
+  const stepMeta = steps.map(({ id, kind, tabName, lineCount, inRows, outLines }) => ({
     id,
     kind,
     tabName,
     lineCount,
-    inFields,
+    inRows,
     outLines,
   }));
 

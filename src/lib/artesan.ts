@@ -3,12 +3,14 @@ import type { Repo } from "@/lib/github";
 
 export type ArtesanStepKind = "experience" | "project";
 
+export type ArtesanField = [string, string];
+
 export type ArtesanStep = {
   id: string;
   kind: ArtesanStepKind;
   tabName: string;
   lineCount: number;
-  inFields: [string, string][];
+  inRows: ArtesanField[][];
   outLines: string[];
   source: string;
 };
@@ -44,10 +46,6 @@ function pascalCase(value: string): string {
 
 function lineCountOf(source: string): number {
   return source.trim().split("\n").length;
-}
-
-function formatUpdatedAt(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-US", { year: "numeric", month: "short" });
 }
 
 function experienceSource(entry: ExperienceEntry): string {
@@ -95,11 +93,15 @@ export function buildArtesanSteps(repos: Repo[]): ArtesanStep[] {
       kind: "experience",
       tabName: `${nextSlug(entry.role)}.tsx`,
       lineCount: lineCountOf(source),
-      inFields: [
-        ["role", entry.role],
-        ["company", entry.company],
-        ["location", entry.location],
-        ["period", entry.period],
+      inRows: [
+        [
+          ["role", entry.role],
+          ["company", entry.company],
+        ],
+        [
+          ["location", entry.location],
+          ["period", entry.period],
+        ],
       ],
       outLines: entry.bullets,
       source,
@@ -113,11 +115,11 @@ export function buildArtesanSteps(repos: Repo[]): ArtesanStep[] {
       kind: "project",
       tabName: `${nextSlug(repo.name)}.tsx`,
       lineCount: lineCountOf(source),
-      inFields: [
-        ["repo", repo.name],
-        ["language", repo.language ?? "Unknown"],
-        ["stars", String(repo.stars)],
-        ["updated", formatUpdatedAt(repo.updatedAt)],
+      inRows: [
+        [
+          ["repo", repo.name],
+          ["language", repo.language ?? "Unknown"],
+        ],
       ],
       outLines: [repo.description ?? "No description provided."],
       source,
