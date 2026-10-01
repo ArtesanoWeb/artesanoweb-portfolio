@@ -29,13 +29,13 @@ export default async function Home() {
     }))
   );
 
-  const stepMeta = steps.map(({ id, kind, inLabel, inMeta, outSummary, tabName }) => ({
+  const stepMeta = steps.map(({ id, kind, tabName, lineCount, inFields, outLines }) => ({
     id,
     kind,
-    inLabel,
-    inMeta,
-    outSummary,
     tabName,
+    lineCount,
+    inFields,
+    outLines,
   }));
 
   return <IdeShell explorerFiles={explorerFiles} detailFiles={detailFiles} steps={stepMeta} />;

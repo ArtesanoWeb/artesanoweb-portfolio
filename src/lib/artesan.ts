@@ -6,10 +6,10 @@ export type ArtesanStepKind = "experience" | "project";
 export type ArtesanStep = {
   id: string;
   kind: ArtesanStepKind;
-  inLabel: string;
-  inMeta: string;
-  outSummary: string;
   tabName: string;
+  lineCount: number;
+  inFields: [string, string][];
+  outLines: string[];
   source: string;
 };
 
@@ -24,6 +24,16 @@ function slug(value: string): string {
     .replace(/(^-|-$)/g, "");
 }
 
+function uniqueSlugger() {
+  const used = new Map<string, number>();
+  return (value: string) => {
+    const base = slug(value);
+    const count = used.get(base) ?? 0;
+    used.set(base, count + 1);
+    return count === 0 ? base : `${base}-${count + 1}`;
+  };
+}
+
 function pascalCase(value: string): string {
   return value
     .split(/[^a-zA-Z0-9]+/)
@@ -32,12 +42,20 @@ function pascalCase(value: string): string {
     .join("");
 }
 
+function lineCountOf(source: string): number {
+  return source.trim().split("\n").length;
+}
+
+function formatUpdatedAt(iso: string): string {
+  return new Date(iso).toLocaleDateString("en-US", { year: "numeric", month: "short" });
+}
+
 function experienceSource(entry: ExperienceEntry): string {
   const outcomes = entry.bullets
     .map((bullet) => `      <Outcome>${JSON.stringify(bullet)}</Outcome>`)
     .join("\n");
 
-  return `export function ${pascalCase(entry.company)}() {
+  return `export function ${pascalCase(entry.role)}() {
   return (
     <Role
       title=${JSON.stringify(entry.role)}
@@ -68,25 +86,43 @@ function projectSource(repo: Repo): string {
 }
 
 export function buildArtesanSteps(repos: Repo[]): ArtesanStep[] {
-  const experienceSteps: ArtesanStep[] = experience.map((entry, index) => ({
-    id: `exp-${index}`,
-    kind: "experience",
-    inLabel: `${entry.role} @ ${entry.company}`,
-    inMeta: `${entry.location} · ${entry.period}`,
-    outSummary: `${entry.bullets.length} outcome${entry.bullets.length === 1 ? "" : "s"}`,
-    tabName: `${slug(entry.company)}.tsx`,
-    source: experienceSource(entry),
-  }));
+  const nextSlug = uniqueSlugger();
 
-  const projectSteps: ArtesanStep[] = repos.map((repo) => ({
-    id: `project-${repo.name}`,
-    kind: "project",
-    inLabel: repo.name,
-    inMeta: repo.language ?? "—",
-    outSummary: repo.description ?? "No description provided.",
-    tabName: `${slug(repo.name)}.tsx`,
-    source: projectSource(repo),
-  }));
+  const experienceSteps: ArtesanStep[] = experience.map((entry, index) => {
+    const source = experienceSource(entry);
+    return {
+      id: `exp-${index}`,
+      kind: "experience",
+      tabName: `${nextSlug(entry.role)}.tsx`,
+      lineCount: lineCountOf(source),
+      inFields: [
+        ["role", entry.role],
+        ["company", entry.company],
+        ["location", entry.location],
+        ["period", entry.period],
+      ],
+      outLines: entry.bullets,
+      source,
+    };
+  });
+
+  const projectSteps: ArtesanStep[] = repos.map((repo) => {
+    const source = projectSource(repo);
+    return {
+      id: `project-${repo.name}`,
+      kind: "project",
+      tabName: `${nextSlug(repo.name)}.tsx`,
+      lineCount: lineCountOf(source),
+      inFields: [
+        ["repo", repo.name],
+        ["language", repo.language ?? "Unknown"],
+        ["stars", String(repo.stars)],
+        ["updated", formatUpdatedAt(repo.updatedAt)],
+      ],
+      outLines: [repo.description ?? "No description provided."],
+      source,
+    };
+  });
 
   return [...experienceSteps, ...projectSteps];
 }
