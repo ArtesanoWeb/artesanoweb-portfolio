@@ -3,7 +3,7 @@ import { profile, education, skills, spokenLanguages } from "@/lib/cv-data";
 export type IdeFile = {
   id: string;
   name: string;
-  language: "typescript" | "json";
+  language: "typescript" | "json" | "tsx";
   source: string;
 };
 
