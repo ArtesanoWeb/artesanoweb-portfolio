@@ -1,21 +1,16 @@
-import { Hero } from "@/components/Hero";
-import { About } from "@/components/About";
-import { Experience } from "@/components/Experience";
-import { Projects } from "@/components/Projects";
-import { Skills } from "@/components/Skills";
-import { Contact } from "@/components/Contact";
+import { IdeShell } from "@/components/ide/IdeShell";
+import { ideFiles } from "@/lib/ide-files";
+import { highlight } from "@/lib/highlight";
 
-export default function Home() {
-  return (
-    <>
-      <Hero />
-      <div className="divide-y divide-border border-t border-border">
-        <About />
-        <Experience />
-        <Projects />
-        <Skills />
-        <Contact />
-      </div>
-    </>
+export default async function Home() {
+  const files = await Promise.all(
+    ideFiles.map(async (file) => ({
+      id: file.id,
+      name: file.name,
+      language: file.language,
+      html: await highlight(file.source, file.language),
+    }))
   );
+
+  return <IdeShell files={files} />;
 }
